@@ -81,13 +81,13 @@ public class Player {
 		}
 	}
 	
-	public float winRate() {
-		if (gamesList!=null) {
+	public double winRate() {
+		if (gamesList!=null && !gamesList.isEmpty()) { // si no pongo el Empty me sigue calculando el winRate con una lista vacia.
 			long totalGames = gamesList.size();
 			long totalWins = gamesList.stream().filter(Game::isWon).count();
-			return (float) totalWins/totalGames * 100;
+			return (double) totalWins/totalGames * 100;
 		} else {
-			return 0.0f; // 0 para que no me de error al crear player.
+			return 0.0; // 0 para que no me de error al crear player.
 		}
 	}
 	

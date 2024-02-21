@@ -14,7 +14,7 @@ public class PlayerDTO {
 	
 	private LocalDateTime registerDate;
 	
-	private float winRate;
+	private double winRate;
 	
 	
 	public PlayerDTO() {
@@ -27,7 +27,7 @@ public class PlayerDTO {
 	}
 
 
-	public PlayerDTO(long playerID, String playerName, LocalDateTime registerDate, float winRate) {
+	public PlayerDTO(long playerID, String playerName, LocalDateTime registerDate, double winRate) {
 		this.playerID = playerID;
 		this.playerName = playerName;
 		this.registerDate = registerDate;
@@ -65,12 +65,12 @@ public class PlayerDTO {
 	}
 
 
-	public float getWinRate() {
+	public double getWinRate() {
 		return winRate;
 	}
 
 
-	public void setWinRate(float winRate) {
+	public void setWinRate(double winRate) {
 		this.winRate = winRate;
 	}
 	
