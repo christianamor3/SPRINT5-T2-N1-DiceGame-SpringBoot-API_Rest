@@ -21,7 +21,7 @@ public class Player {
 	@Field(name="Register_Date")
 	private LocalDateTime registerDate;
 	
-	@DBRef
+	@DBRef // Guarda solo la referencia de los documentos Game.
 	private List<Game> gamesList;
 
 	
@@ -72,6 +72,7 @@ public class Player {
 			gamesList = new ArrayList<>();
 		} 
 			gamesList.add(game);
+			game.setPlayer(this);
 	}
 	
 	public double winRate() {

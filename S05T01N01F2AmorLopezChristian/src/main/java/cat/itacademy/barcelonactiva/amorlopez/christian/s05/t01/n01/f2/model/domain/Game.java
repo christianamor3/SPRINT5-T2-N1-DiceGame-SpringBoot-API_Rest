@@ -20,7 +20,7 @@ public class Game {
 	@Field(name="Result")
 	private boolean won;
 	
-	@DBRef
+	@DBRef // Guarda la referencia del player en el documento Game.
 	private Player player;
 	
 	public Game() {
