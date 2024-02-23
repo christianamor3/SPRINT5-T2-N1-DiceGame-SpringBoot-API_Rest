@@ -11,6 +11,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table (name="Player")
@@ -29,56 +38,12 @@ public class Player {
 	@OneToMany(mappedBy = "player")
 	private List<Game> gamesList;
 
-	
-	public Player() {
-	}
 
-	public Player(long playerID, String playerName, LocalDateTime registerDate, List<Game> gamesList) {
-		this.playerID = playerID;
-		this.playerName = playerName;
-		this.registerDate = registerDate;
-		this.gamesList = gamesList;
-	}
-
-	public long getPlayerID() {
-		return playerID;
-	}
-
-	public void setPlayerID(long playerID) {
-		this.playerID = playerID;
-	}
-
-	public String getPlayerName() {
-		return playerName;
-	}
-
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
-
-	public LocalDateTime getRegisterDate() {
-		return registerDate;
-	}
-
-	public void setRegisterDate(LocalDateTime registerDate) {
-		this.registerDate = registerDate;
-	}
-
-	public List<Game> getGamesList() {
-		return gamesList;
-	}
-
-	public void setGamesList(List<Game> gamesList) {
-		this.gamesList = gamesList;
-	}
-	
 	public void addingGame(Game game) {
 		if (gamesList==null) {
 			gamesList = new ArrayList<>();
-		} else {
-			gamesList.add(game);
-			game.setPlayer(this);
-		}
+		} 
+		gamesList.add(game);
 	}
 	
 	public double winRate() {

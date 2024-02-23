@@ -30,14 +30,16 @@ public class GameServiceImpl implements GameService {
 	public GameDTO playerPlayGame(long id) {
 		
 		Optional<Player> player = playerRepo.findById(id); // Buscamos el jugador que queremos que juegue
-		
-		Game game = new Game(); // Creamos el juego
-		
+				
 		if (player.isPresent()) { // Si encontramos el jugador, jugamos.
 			Player playerNew = player.get();
+			
+			Game game = new Game(); // Creamos el juego
 					
 			dicePlay(game); // Le damos un valor a los dados y jugamos 
 
+			game.setPlayer(playerNew); // Le indicamos al juego, el jugador.
+			
 			playerNew.addingGame(game); // Le añadimos el juego al jugador.
 			
 			gameRepo.save(game); // Guardamos el juego, con todos sus datos (dados, por ej) en la base de datos.
@@ -81,10 +83,8 @@ public class GameServiceImpl implements GameService {
 	
 	public void dicePlay(Game game) {
 		Random random = new Random();
-		int diceOne = random.nextInt(6)+1;
-		int diceTwo = random.nextInt(6)+1;
-		game.setDiceOne(diceOne); // Hay que guardar el valor de los dados por que los necesitamos para la base de datos.
-		game.setDiceTwo(diceTwo);
+		game.setDiceOne(random.nextInt(6)+1); // Hay que guardar el valor de los dados por que los necesitamos para la base de datos.
+		game.setDiceTwo(random.nextInt(6)+1);
 		game.setWon(game.wonOrNot());
 		
 	}
