@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.enums.Role;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Builder
 
 @Entity
-@Table(name="Game")
+@Table(name="User")
 public class User implements UserDetails{
 
 	
@@ -35,9 +36,17 @@ public class User implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userID;
+	
+	@Column(name="Nombre")
 	private String firstName;
+	
+	@Column(name="Apellido")
 	private String lastName;
+	
+	@Column(name="email")
 	private String email;
+	
+	@Column(name="contraseña")
 	private String password;
 	
 	@Enumerated(EnumType.ORDINAL)

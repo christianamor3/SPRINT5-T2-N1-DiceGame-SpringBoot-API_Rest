@@ -3,6 +3,7 @@ package cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N0
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.EmailOrPasswordNotFoundException;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.UserAlreadyExistsException;
-import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.UserNotFoundException;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.dto.AuthenticationResponse;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.dto.SignInDTO;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.dto.SignUpDTO;
@@ -25,7 +25,7 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationService authService;
 
-	@PostMapping("/singUp")
+	@PostMapping("/signUp")
 	public ResponseEntity<AuthenticationResponse> signUp (@RequestBody SignUpDTO request){
 		try {
 			return ResponseEntity.ok(authService.signUp(request));
@@ -42,7 +42,7 @@ public class AuthenticationController {
 	public ResponseEntity<AuthenticationResponse> signIn (@RequestBody SignInDTO request){
 		try {
 			return ResponseEntity.ok(authService.signIn(request));
-		} catch (UserNotFoundException unfw){
+		} catch (UsernameNotFoundException unfw){
 			System.out.println(unfw.getMessage());
 			return ResponseEntity.notFound().build();
 		}

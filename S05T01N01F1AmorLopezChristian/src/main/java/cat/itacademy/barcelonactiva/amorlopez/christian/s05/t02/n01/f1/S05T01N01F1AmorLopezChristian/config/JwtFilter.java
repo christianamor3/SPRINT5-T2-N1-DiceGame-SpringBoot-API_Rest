@@ -39,6 +39,7 @@ public class JwtFilter extends OncePerRequestFilter{
 		final String userEmail;
 		if (authHeader==null || !authHeader.startsWith("Bearer")) { // Valido si el usuario me esta mandando un JSON WEB TOKEN. Si no lo manda, error, si no es de tipo Bearer, error.
 			filterChain.doFilter(request, response);
+			return;
 		}
 		jwt = authHeader.substring(7); // Saltamos hasta donde empieza el token.
 		userEmail = jwtService.getUserName(jwt); // Queremos extraer el email del JWT para comprobar si esta en la base de datos.

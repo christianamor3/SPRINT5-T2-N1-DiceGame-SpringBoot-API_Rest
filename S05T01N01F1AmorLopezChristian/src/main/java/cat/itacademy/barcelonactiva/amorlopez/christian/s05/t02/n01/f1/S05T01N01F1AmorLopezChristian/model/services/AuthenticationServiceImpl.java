@@ -3,12 +3,12 @@ package cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N0
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.EmailOrPasswordNotFoundException;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.UserAlreadyExistsException;
-import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.UserNotFoundException;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.domain.User;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.dto.AuthenticationResponse;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.dto.SignInDTO;
@@ -23,8 +23,14 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private JwtService jwtService;
+	
+	@Autowired
 	private AuthenticationManager authenticationManager; 
 	
 	
@@ -52,15 +58,17 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
 	@Override
 	public AuthenticationResponse signIn(SignInDTO request) {
-		authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							request.getEmail(), 
-							request.getPassword())); 
-		User user = userRepo.findByEmail(request.getEmail())
-				.orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario"));
-		String jwt = jwtService.tokenGenerator(user);
-		
-		return AuthenticationResponse.builder().token(jwt).build();
+	    
+	        authenticationManager.authenticate(
+	            new UsernamePasswordAuthenticationToken(
+	                request.getEmail(), 
+	                request.getPassword())); 
+	        
+	        User user = userRepo.findByEmail(request.getEmail())
+	            .orElseThrow(() -> new UsernameNotFoundException("No se ha encontrado al usuario"));
+	        String jwt = jwtService.tokenGenerator(user);
+	        
+	        return AuthenticationResponse.builder().token(jwt).build();
 	}
 
 }
