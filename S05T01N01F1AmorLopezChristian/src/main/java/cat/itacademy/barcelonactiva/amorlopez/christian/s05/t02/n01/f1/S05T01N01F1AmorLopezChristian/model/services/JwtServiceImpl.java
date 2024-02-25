@@ -8,12 +8,15 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
+import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.services.interfaces.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+@Service
 public class JwtServiceImpl implements JwtService{
 
 	private static final String SECRET_KEY = "413F4428472B4B6250654368566D5970337336763979244226452948404D6351";

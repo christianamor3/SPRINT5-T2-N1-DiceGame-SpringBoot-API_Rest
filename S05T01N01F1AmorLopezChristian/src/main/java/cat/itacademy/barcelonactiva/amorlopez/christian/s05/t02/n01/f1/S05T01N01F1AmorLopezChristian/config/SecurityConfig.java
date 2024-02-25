@@ -27,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final JwtFilter jwtFilter;
+	
+	private final AuthenticationProvider authenticationProvider;
 		
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,8 +41,8 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/swagger-resources/*"),
                                 new AntPathRequestMatcher("/v3/api-docs/**"))
                         .permitAll().anyRequest().authenticated())
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Es el filtro que se ejecuta antes del proceso de autenticación.
 
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
@@ -48,20 +50,6 @@ public class SecurityConfig {
     }
 	
 	
-	
-	@Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService.userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-	
-	@Bean // Bean para utilizarlo en el contexto de la aplicacion.
-    public PasswordEncoder passwordEncoder() { // Encriptamos las claves 
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
