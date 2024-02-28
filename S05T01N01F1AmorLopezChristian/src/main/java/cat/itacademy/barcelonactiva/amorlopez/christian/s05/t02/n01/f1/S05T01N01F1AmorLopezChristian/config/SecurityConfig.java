@@ -33,10 +33,7 @@ public class SecurityConfig {
                 //.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers(new AntPathRequestMatcher("/auth/**"),
-                                new AntPathRequestMatcher("/swagger-ui/**"),
-                                new AntPathRequestMatcher("/swagger-resources/*"),
-                                new AntPathRequestMatcher("/v3/api-docs"))
+                        .requestMatchers(new AntPathRequestMatcher("/auth/**"))
                         .permitAll().anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Es el filtro que se ejecuta antes del proceso de autenticación.
