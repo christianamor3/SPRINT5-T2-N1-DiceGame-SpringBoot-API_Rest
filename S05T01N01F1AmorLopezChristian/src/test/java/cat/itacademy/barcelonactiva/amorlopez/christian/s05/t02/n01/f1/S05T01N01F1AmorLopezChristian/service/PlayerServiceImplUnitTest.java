@@ -44,8 +44,6 @@ public class PlayerServiceImplUnitTest {
 	private Player playerTest2;
 	private PlayerDTO playerDTOTest2;
 
-
-	
 	@BeforeEach
 	void setUp() {
 		playerTest = Player.builder()
@@ -55,16 +53,10 @@ public class PlayerServiceImplUnitTest {
 		
 		playerDTOTest = PlayerDTO.builder()
 					.playerID(1L)
-					.winRate(50)
 					.playerName("Christian").build();
 		
 		playerTest2 = Player.builder()
 				.playerID(2)
-				.playerName("Claudia").build();
-		
-		playerDTOTest2 = PlayerDTO.builder()
-				.playerID(2L)
-				.winRate(50)
 				.playerName("Claudia").build();
 	}
 	
@@ -128,7 +120,12 @@ public class PlayerServiceImplUnitTest {
 	 @Test
 	 @DisplayName("PlayerServiceImplUnitTest - avgWinrate should return 50 ")
 	 void avgwinrate_should_return_50() {
-		 Game game1 = Game.builder().diceOne(2).diceTwo(5).won(true).build();
+		 
+		// Necesito crear los juegos y añadirlos a los jugadores, por que el metodo avgWinRate coge la lista de jugadores 
+		 // y de cada uno calcula su winRate a partir de sus juegos
+		 
+		 
+		 Game game1 = Game.builder().diceOne(2).diceTwo(5).won(true).build(); 
 		 Game game2 = Game.builder().diceOne(3).diceTwo(5).won(false).build();
 		 
 		 playerTest.addingGame(game1);
