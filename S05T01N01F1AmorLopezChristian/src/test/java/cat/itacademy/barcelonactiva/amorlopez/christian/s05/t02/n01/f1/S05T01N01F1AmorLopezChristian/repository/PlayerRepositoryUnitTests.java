@@ -53,21 +53,21 @@ public class PlayerRepositoryUnitTests {
 	@Test
 	@DisplayName("PlayerRepositoryUnitTest - Test for insert new Player")
 	void save_should_insert_new_Player() {
-		playerRepo.save(playerTest);
+		Player playerSaved = playerRepo.save(playerTest);
 		
-		assertThat(playerTest).isNotNull();
-		assertThat(playerTest.getPlayerID()).isGreaterThan(0);
-		assertThat(playerTest.getPlayerName()).isEqualTo("Christian");
+		assertThat(playerSaved).isNotNull();
+		assertThat(playerSaved.getPlayerID()).isGreaterThan(0);
+		assertThat(playerSaved.getPlayerName()).isEqualTo("Christian");
 	}
 	
 	@Test
 	@DisplayName("PlayerRepositoryUnitTest - Test for finding a Player")
 	void findById_should_find_Player() {
-		playerRepo.save(playerTest);
+		Player playerSaved = playerRepo.save(playerTest);
 		
 		Optional <Player> player = playerRepo.findById(playerTest.getPlayerID());
 		
-		assertThat(player.get().getPlayerID()).isGreaterThan(0);
+		assertThat(player.get().getPlayerID()).isEqualTo(playerSaved.getPlayerID());
 	}
 	
 	@Test

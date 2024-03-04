@@ -61,23 +61,23 @@ public class GameRepositoryUnitTests {
 	@Test
 	@DisplayName("GameRepositoryUnitTest - Test for insert new Game")
 	void save_should_insert_new_Game() {
-		gameRepo.save(gameTest);
+		Game gameSaved = gameRepo.save(gameTest);
 		
-		assertThat(gameTest).isNotNull();
-		assertThat(gameTest.getGameID()).isGreaterThan(0);
-		assertThat(gameTest.getDiceOne()==1);
-		assertThat(gameTest.getDiceTwo()==5);
-		assertThat(gameTest.isWon()==false);		
+		assertThat(gameSaved).isNotNull();
+		assertThat(gameSaved.getGameID()).isGreaterThan(0);
+		assertThat(gameSaved.getDiceOne()==1);
+		assertThat(gameSaved.getDiceTwo()==5);
+		assertThat(gameSaved.isWon()==false);		
 	}
 	
 	@Test
 	@DisplayName("GameRepositoryUnitTest - Test for finding a Game")
 	void findById_should_find_Game() {
-		gameRepo.save(gameTest);
+		Game gameSaved = gameRepo.save(gameTest);
 		
 		Optional <Game> game = gameRepo.findById(gameTest.getGameID());
 		
-		assertThat(game.get().getGameID()).isGreaterThan(0);
+		assertThat(game.get().getGameID()).isEqualTo(gameSaved.getGameID()); // Comparo si lo que me devuelve es igual a lo que yo he guardado
 	}
 	
 	@Test

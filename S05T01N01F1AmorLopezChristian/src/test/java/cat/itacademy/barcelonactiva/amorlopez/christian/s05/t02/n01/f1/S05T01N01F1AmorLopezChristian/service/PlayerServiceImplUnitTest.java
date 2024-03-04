@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.PlayerAlreadyExistsException;
+import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.exceptions.PlayersNotFoundException;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.domain.Game;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.domain.Player;
 import cat.itacademy.barcelonactiva.amorlopez.christian.s05.t02.n01.f1.S05T01N01F1AmorLopezChristian.model.dto.PlayerDTO;
@@ -79,7 +80,7 @@ public class PlayerServiceImplUnitTest {
 	 @Test
 	 @DisplayName("PlayerServiceImplUnitTest - Used Name should return an Exception ")
 	 void save_should_return_exception_when_usedName() {
-		 when(playerRepo.existsByPlayerName(playerTest.getPlayerName())).thenReturn(true);
+		 when(playerRepo.existsByPlayerName(playerDTOTest.getPlayerName())).thenReturn(true);
 		 
 		 assertThrows(PlayerAlreadyExistsException.class, () -> playerService.save(playerDTOTest));
 	 }
@@ -87,12 +88,12 @@ public class PlayerServiceImplUnitTest {
 	 @Test
 	 @DisplayName("PlayerServiceImplUnitTest - Update should update player ")
 	 void update_should_update_player() {
-		 when(playerRepo.findById(playerTest.getPlayerID())).thenReturn(Optional.of(playerTest));
+		 when(playerRepo.findById(1L)).thenReturn(Optional.of(playerTest));
 		 when(playerRepo.save(any(Player.class))).thenReturn(playerTest);
 		 
 		 playerDTOTest.setPlayerName("Claudia"); // Claudia es el nombre del DTO que le pondrá al Entity que encuentre con id 1, que es Christian.
 		 
-		 PlayerDTO dtoTest = playerService.update(1, playerDTOTest);
+		 PlayerDTO dtoTest = playerService.update(1L, playerDTOTest);
 		 
 		 assertThat("Claudia").isEqualTo(dtoTest.getPlayerName());
 	 }
@@ -100,9 +101,9 @@ public class PlayerServiceImplUnitTest {
 	 @Test
 	 @DisplayName("PlayerServiceImplUnitTest - findById should return a player ")
 	 void findById_should_return_playerDTO() {
-		 when(playerRepo.findById(playerTest.getPlayerID())).thenReturn(Optional.of(playerTest));
+		 when(playerRepo.findById(1L)).thenReturn(Optional.of(playerTest));
 		 		 
-		 PlayerDTO dtoTest = playerService.findById(1); // Cuando acceda a este metodo, pasara el playerTest a DTO, por lo que el nombre del playerTest deberia ser igual que el del DTO que me devuelve
+		 PlayerDTO dtoTest = playerService.findById(1L); // Cuando acceda a este metodo, pasara el playerTest a DTO, por lo que el nombre del playerTest deberia ser igual que el del DTO que me devuelve
 		 
 		 assertThat(playerTest.getPlayerName()).isEqualTo(dtoTest.getPlayerName());
 	 }
@@ -136,6 +137,57 @@ public class PlayerServiceImplUnitTest {
 		 double resultAvgWinRate = playerService.avgWinRate();
 		 
 		 assertThat(50.0).isEqualTo(resultAvgWinRate);
+	 }
+	 
+	 @Test
+	 @DisplayName("PlayerServiceImplUnitTest - avgWinrate should return exception if no players ")
+	 void avgwinrate_should_return_exception_if_no_players() {	
+
+		 when(playerRepo.findAll()).thenReturn(List.of());
+		 		 		 
+		 assertThrows(PlayersNotFoundException.class, () -> playerService.avgWinRate());
+	 }
+	 
+	 
+	 
+	 @Test
+	 @DisplayName("PlayerServiceImplUnitTest - less winrate player should return Claudia ")
+	 void lesswinrateplayer_should_return_Claudia() {
+		 	 
+		 Game game1 = Game.builder().diceOne(2).diceTwo(5).won(true).build(); 
+		 Game game2 = Game.builder().diceOne(3).diceTwo(5).won(false).build();
+		 
+		 playerTest.addingGame(game1);
+		 playerTest2.addingGame(game2);
+		 
+		 game1.setPlayer(playerTest);
+		 game2.setPlayer(playerTest2);
+		 
+		 when(playerRepo.findAll()).thenReturn(List.of(playerTest, playerTest2));
+		 		 
+		 PlayerDTO lessWinRate = playerService.lessWinRatePlayer();
+		 
+		 assertThat("Claudia").isEqualTo(lessWinRate.getPlayerName());
+	 }
+	 
+	 @Test
+	 @DisplayName("PlayerServiceImplUnitTest - max winrate player should return Claudia ")
+	 void maxwinrateplayer_should_return_Christian() {
+		 	 
+		 Game game1 = Game.builder().diceOne(2).diceTwo(5).won(true).build(); 
+		 Game game2 = Game.builder().diceOne(3).diceTwo(5).won(false).build();
+		 
+		 playerTest.addingGame(game1);
+		 playerTest2.addingGame(game2);
+		 
+		 game1.setPlayer(playerTest);
+		 game2.setPlayer(playerTest2);
+		 
+		 when(playerRepo.findAll()).thenReturn(List.of(playerTest, playerTest2));
+		 		 
+		 PlayerDTO maxWinRate = playerService.maxWinRatePlayer();
+		 
+		 assertThat("Christian").isEqualTo(maxWinRate.getPlayerName());
 	 }
 	 
 }
