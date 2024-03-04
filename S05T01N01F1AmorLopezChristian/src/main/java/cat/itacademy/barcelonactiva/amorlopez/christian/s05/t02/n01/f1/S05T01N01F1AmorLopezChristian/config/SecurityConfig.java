@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authHttp -> authHttp
                         .requestMatchers(new AntPathRequestMatcher("/auth/**"))
-                        .permitAll().anyRequest().authenticated())
+                        .permitAll().anyRequest().authenticated()) // Comprobamos que tipo de URL es y si necesita o no token
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Es el filtro que se ejecuta antes del proceso de autenticación.
 

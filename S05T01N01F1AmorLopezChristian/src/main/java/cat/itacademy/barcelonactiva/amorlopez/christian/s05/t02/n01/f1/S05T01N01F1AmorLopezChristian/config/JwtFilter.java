@@ -44,8 +44,8 @@ public class JwtFilter extends OncePerRequestFilter{
 		jwt = authHeader.substring(7); // Saltamos hasta donde empieza el token.
 		userEmail = jwtService.getUserName(jwt); // Queremos extraer el email del JWT para comprobar si esta en la base de datos.
 		if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) { // Valido si el token trae usuario.
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail); // Compruebo si el usuario esta en la base de datos
-			if (jwtService.tokenValidation(jwt, userDetails)) { // Por ultimo, compruebo que el token sea valido, una vez se que el usuario esta en la base de datos.
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail); // Cargo los datos del usuario segun su username.
+			if (jwtService.tokenValidation(jwt, userDetails)) { // Por ultimo, compruebo que el usuario esté en la base de datos y que el token sea valido
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, 
 																											null, 
 																												userDetails.getAuthorities());
